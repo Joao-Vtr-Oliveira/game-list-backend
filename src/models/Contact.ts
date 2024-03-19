@@ -1,14 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../instances/pg';
 
-export interface ContatoInstance extends Model {
+export interface ContactInstance extends Model {
 	id: number;
 	name: string;
 	email: string;
 	phone: string;
 }
 
-export const Contato = sequelize.define<ContatoInstance>('Contato', {
+export const Contact = sequelize.define<ContactInstance>('Contact', {
 		id: {
 			primaryKey: true,
 			type: DataTypes.INTEGER,
@@ -27,7 +27,7 @@ export const Contato = sequelize.define<ContatoInstance>('Contato', {
 		},
 	},
 	{
-		tableName: 'contatos',
+		tableName: 'contacts',
 		timestamps: false,
 	}
 );
