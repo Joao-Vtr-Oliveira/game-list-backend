@@ -1,15 +1,20 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import * as PageController from '../controllers/pageController';
-import { Contato } from '../models/Contato';
 
 const router = Router();
 
 router.get('/ping', PageController.ping);
 
-// ! Apenas um teste temporário
-router.get('/', async (req: Request, res: Response) => {
-  let contatos = await Contato.findAll();
-  res.send({contatos})
-})
+// TODO -> [X] Rota para ver todos os contatos
+// TODO -> [X] Rota para ver um contato
+// TODO -> [X] Rota para Adicionar novo contato
+// TODO -> [X] Rota para deletar contato
+// TODO -> [] Rota para editar contato
+
+router.get('/contacts', PageController.getAllContacts);
+router.post('/contacts', PageController.postContact);
+router.get('/contacts/:id', PageController.getContact);
+router.delete('/contacts/:id', PageController.deleteContact);
+router.put('/contacts/:id', PageController.putContact);
 
 export default router;
