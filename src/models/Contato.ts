@@ -12,6 +12,7 @@ export const Contato = sequelize.define<ContatoInstance>('Contato', {
 		id: {
 			primaryKey: true,
 			type: DataTypes.INTEGER,
+			autoIncrement: true,
 		},
 		name: {
 			type: DataTypes.STRING,
