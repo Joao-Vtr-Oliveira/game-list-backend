@@ -48,7 +48,7 @@ export const deleteContact = async (req: Request, res: Response) => {
 		const contact = await Contact.findByPk(req.params.id);
 		if (contact) {
 			await contact.destroy();
-			res.status(200).send({ message: 'Contact deleted.' });
+			return res.status(200).send({ message: 'Contact deleted.' });
 		}
 		res.status(404).send({ error: 'Contact not found!' });
 	} catch (error) {
