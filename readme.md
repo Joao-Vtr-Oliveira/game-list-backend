@@ -10,3 +10,7 @@
 ## Esse é o back-end do projeto de lista de contatos, que é um CRUD que você pode ler, adicionar, remover e editar uma lista de contatos.
 
 ### Ele foi feito com Node.js e Express utilizando TypeScript em sua base, e foi utilizado Postgres como Banco de Dados e o Sequelize como ORM.
+
+---
+
+- Você pode ver a implementação front-end desse projeto [Aqui.](https://github.com/Joao-Vtr-Oliveira/lista-de-contatos-frontend)
