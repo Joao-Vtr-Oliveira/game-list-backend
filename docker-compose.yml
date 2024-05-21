@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=b234
+    ports:
+      - 8080:8080
+    volumes:
+      - db:/var/lib/postgres
+    networks:
+      - LDC
+  node-ldc:
+    build: 
+      context: .
+      dockerfile: app.dockerfile
+    container_name: node-ldc
+    depends_on:
+      - postgres
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - LDC
+volumes:
+  db:
+networks:
+  LDC:
+    driver: bridge
