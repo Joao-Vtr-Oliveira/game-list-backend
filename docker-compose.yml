@@ -13,8 +13,9 @@ services:
       - db:/var/lib/postgresql/data
     networks:
       - LDC
+
   node-ldc:
-    build: 
+    build:
       context: .
       dockerfile: app.dockerfile
     container_name: node-ldc
@@ -23,10 +24,14 @@ services:
     restart: always
     ports:
       - 3000:3000
+    environment:
+      - DATABASE_URL=postgresql://postgres:1234@postgres:5432/lista_de_contato
     networks:
       - LDC
+
 volumes:
   db:
+
 networks:
   LDC:
     driver: bridge
