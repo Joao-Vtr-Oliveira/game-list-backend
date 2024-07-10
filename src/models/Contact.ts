@@ -1,14 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../instances/pg';
 
-export interface ContactInstance extends Model {
+export interface GameInstance extends Model {
 	id: number;
 	name: string;
-	email: string;
-	phone: string;
+	rate: number;
+	category: string;
 }
 
-export const Contact = sequelize.define<ContactInstance>('Contact', {
+export const Game = sequelize.define<GameInstance>('Game', {
 		id: {
 			primaryKey: true,
 			type: DataTypes.INTEGER,
@@ -17,17 +17,15 @@ export const Contact = sequelize.define<ContactInstance>('Contact', {
 		name: {
 			type: DataTypes.STRING,
 		},
-		email: {
-			type: DataTypes.STRING,
-			unique: true,
+		rate: {
+			type: DataTypes.INTEGER,
 		},
-		phone: {
+		category: {
 			type: DataTypes.STRING,
-			unique: true,
-		},
+		}
 	},
 	{
-		tableName: 'contacts',
+		tableName: 'games',
 		timestamps: false,
 	}
 );

@@ -1,0 +1,22 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Game {
+  id        Int      @id @default(autoincrement())
+  name      String
+  rate      Int
+  category  Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  games Game[]
+}
