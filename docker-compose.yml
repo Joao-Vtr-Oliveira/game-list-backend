@@ -5,16 +5,17 @@ services:
     container_name: postgres
     restart: always
     environment:
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=lista_de_contato
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: lista_de_contato
     ports:
       - 5432:5432
     volumes:
       - db:/var/lib/postgresql/data
     networks:
       - LDC
+
   node-ldc:
-    build: 
+    build:
       context: .
       dockerfile: app.dockerfile
     container_name: node-ldc
@@ -25,8 +26,10 @@ services:
       - 3000:3000
     networks:
       - LDC
+
 volumes:
   db:
+
 networks:
   LDC:
     driver: bridge
