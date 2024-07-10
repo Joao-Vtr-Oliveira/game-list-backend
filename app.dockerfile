@@ -20,4 +20,4 @@ ENV DATABASE_URL=postgresql://postgres:1234@postgres:5432/lista_de_contato
 RUN chmod +x wait-for-it.sh
 
 # Use o script para esperar o PostgreSQL estar pronto antes de rodar os comandos do Prisma
-CMD ["./wait-for-it.sh", "postgres", "5432", "--", "sh", "-c", "npx prisma generate && npx prisma db push && npm run start-dev && tail -f /dev/null"]
+CMD ["./wait-for-it.sh", "postgres", "5432", "--", "sh", "-c", "npx prisma generate && npx prisma db push && npm run start-dev"]
