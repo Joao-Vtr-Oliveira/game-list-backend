@@ -8,15 +8,23 @@ generator client {
 }
 
 model Game {
-  id         Int      @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   name       String
   rate       Int
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  categories GameCategory[]  // Relacionamento muitos-para-muitos
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  games Game[]
+  id    Int           @id @default(autoincrement())
+  name  String        @unique
+  games GameCategory[] // Relacionamento muitos-para-muitos
+}
+
+model GameCategory {
+  gameId     Int
+  categoryId Int
+  game       Game     @relation(fields: [gameId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([gameId, categoryId])
 }
