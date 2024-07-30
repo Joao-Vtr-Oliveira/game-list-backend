@@ -17,7 +17,6 @@ export const cleanCategories = async () => {
 export const getAllCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.category.findMany({
-      include: { games: true }, // Inclui os jogos relacionados
     });
     res.status(200).json({ categories });
   } catch (error) {
