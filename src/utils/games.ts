@@ -8,7 +8,7 @@ export type Game = {
 
 export const games: Game[] = [
   {
-    name: 'Game 1',
+    name: 'Project Zomboid',
     rate: 4,
     categoryIds: [
       categories.find(cat => cat.name === 'Action')?.id || 1,
@@ -16,7 +16,7 @@ export const games: Game[] = [
     ],
   },
   {
-    name: 'Game 2',
+    name: 'Celeste',
     rate: 5,
     categoryIds: [categories.find(cat => cat.name === 'Adventure')?.id || 2],
   },
