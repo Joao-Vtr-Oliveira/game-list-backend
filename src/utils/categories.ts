@@ -1,7 +1,5 @@
-// categories.ts
-
 export type Category = {
-  id: number; // Adicionar a propriedade id
+  id: number;
   name: string;
 }
 
