@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 export async function clearDatabase() {
     try {
+        await prisma.gameCategory.deleteMany();
         await prisma.game.deleteMany({});
         await prisma.category.deleteMany({});
         // Adicione outras tabelas que deseja limpar aqui

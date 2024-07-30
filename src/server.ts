@@ -1,5 +1,3 @@
-// server.ts
-
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cors from 'cors';
@@ -8,7 +6,7 @@ import mainRoutes from './routes/games';
 import categoryRoutes from './routes/categories';
 import { PrismaClient } from '@prisma/client';
 import { categories } from './utils/categories';
-import { games, Game } from './utils/games';
+import { games } from './utils/games';
 import { clearDatabase } from './utils/dbUtils';
 
 dotenv.config();
@@ -44,31 +42,47 @@ async function initializeDatabase() {
     // Limpar o banco de dados antes de adicionar novos dados
     await clearDatabase();
 
-    // Criar categorias no banco de dados
+    // Criar categorias no banco de dados, evitando duplicados
     for (const category of categories) {
-      await prisma.category.create({
-        data: {
-          id: category.id, // Definir o ID da categoria
-          name: category.name,
-        },
+      const existingCategory = await prisma.category.findUnique({
+        where: { id: category.id },
       });
+      if (!existingCategory) {
+        await prisma.category.create({
+          data: {
+            id: category.id, // Definir o ID da categoria
+            name: category.name,
+          },
+        });
+      }
     }
 
-    // Associar jogos com categorias
+    // Criar jogos no banco de dados
     for (const game of games) {
-      const { name, rate, categoryId } = game;
-      await prisma.game.create({
+      const { name, rate, categoryIds } = game;
+      const createdGame = await prisma.game.create({
         data: {
           name,
           rate,
-          categoryId,
         },
       });
+
+      // Associar jogos com categorias na tabela intermediária GameCategory
+      for (const categoryId of categoryIds) {
+        await prisma.gameCategory.create({
+          data: {
+            gameId: createdGame.id,
+            categoryId,
+          },
+        });
+      }
     }
 
     console.log('Database initialized with initial categories and games.');
   } catch (error) {
     console.error('Error initializing database:', error);
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
