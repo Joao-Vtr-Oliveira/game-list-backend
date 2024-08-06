@@ -30,7 +30,6 @@ export const getCategoryById = async (req: Request, res: Response) => {
   try {
     const category = await prisma.category.findUnique({
       where: { id: categoryId },
-      include: { games: true }, // Inclui os jogos relacionados
     });
     if (!category) {
       res.status(404).json({ error: 'Category not found' });
