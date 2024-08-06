@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --verbose --coverage --watch",
     "start-dev": "nodemon -e ts,json,mustache src/server.ts"
   },
   "author": "João V.",
