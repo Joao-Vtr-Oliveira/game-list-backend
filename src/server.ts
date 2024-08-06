@@ -1,3 +1,4 @@
+// server.ts
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cors from 'cors';
@@ -39,10 +40,8 @@ server.use((err: any, req: Request, res: Response, next: NextFunction) => {
 // Função para inicializar o banco de dados com categorias e jogos
 async function initializeDatabase() {
   try {
-    // Limpar o banco de dados antes de adicionar novos dados
     await clearDatabase();
 
-    // Criar categorias no banco de dados, evitando duplicados
     for (const category of categories) {
       const existingCategory = await prisma.category.findUnique({
         where: { id: category.id },
@@ -50,14 +49,13 @@ async function initializeDatabase() {
       if (!existingCategory) {
         await prisma.category.create({
           data: {
-            id: category.id, // Definir o ID da categoria
+            id: category.id,
             name: category.name,
           },
         });
       }
     }
 
-    // Criar jogos no banco de dados
     for (const game of games) {
       const { name, rate, categoryIds } = game;
       const createdGame = await prisma.game.create({
@@ -67,7 +65,6 @@ async function initializeDatabase() {
         },
       });
 
-      // Associar jogos com categorias na tabela intermediária GameCategory
       for (const categoryId of categoryIds) {
         await prisma.gameCategory.create({
           data: {
@@ -86,14 +83,17 @@ async function initializeDatabase() {
   }
 }
 
-// Inicializar o banco de dados ao iniciar o servidor
-async function startServer() {
+export async function startServer() {
   await initializeDatabase();
   const PORT = process.env.PORT || 3000;
-  server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  return new Promise<any>((resolve, reject) => {
+    const serverInstance = server.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+      resolve(serverInstance);
+    }).on('error', reject);
   });
 }
 
-// Iniciar o servidor
-startServer();
+if(process.env.NODE_ENV !== 'test') {
+  startServer();
+}

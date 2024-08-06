@@ -53,6 +53,7 @@ export const createCategory = async (req: Request, res: Response) => {
     res.status(201).json({ category: newCategory });
   } catch (error) {
     res.status(500).json({ error: 'Error creating category' });
+    console.log(error)
   }
 };
 
@@ -80,7 +81,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
     await prisma.category.delete({
       where: { id: categoryId },
     });
-    res.status(200).json({ message: 'Category deleted successfully' });
+    res.status(204).json({ message: 'Category deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error deleting category' });
   }
