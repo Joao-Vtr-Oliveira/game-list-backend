@@ -97,3 +97,5 @@ async function startServer() {
 
 // Iniciar o servidor
 startServer();
+
+export default server;
