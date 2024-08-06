@@ -3,6 +3,20 @@ import request from 'supertest';
 import { Game } from '../utils/games';
 
 describe('Game List API', () => {
+	let server: any;
+
+  beforeAll(async () => {
+    server = app.listen(3000, () => {
+      console.log('Server is running on http://localhost:3000');
+    });
+    // Espera até que o servidor esteja completamente inicializado
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  });
+
+  afterAll(async () => {
+    await server.close();
+  });
+	
 	it('should get all games', async () => {
 		const res = await request(app).get('/games');
 		expect(res.status).toBe(200);
