@@ -5,14 +5,10 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mainRoutes from './routes/games';
 import categoryRoutes from './routes/categories';
-import { PrismaClient } from '@prisma/client';
-import { categories } from './utils/categories';
-import { games } from './utils/games';
-import { clearDatabase } from './utils/dbUtils';
+import { initializeDatabase } from './utils/dbUtils';
 
 dotenv.config();
 
-const prisma = new PrismaClient();
 const server = express();
 
 server.use(cors());
@@ -37,51 +33,6 @@ server.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// Função para inicializar o banco de dados com categorias e jogos
-async function initializeDatabase() {
-  try {
-    await clearDatabase();
-
-    for (const category of categories) {
-      const existingCategory = await prisma.category.findUnique({
-        where: { id: category.id },
-      });
-      if (!existingCategory) {
-        await prisma.category.create({
-          data: {
-            id: category.id,
-            name: category.name,
-          },
-        });
-      }
-    }
-
-    for (const game of games) {
-      const { name, rate, categoryIds } = game;
-      const createdGame = await prisma.game.create({
-        data: {
-          name,
-          rate,
-        },
-      });
-
-      for (const categoryId of categoryIds) {
-        await prisma.gameCategory.create({
-          data: {
-            gameId: createdGame.id,
-            categoryId,
-          },
-        });
-      }
-    }
-
-    console.log('Database initialized with initial categories and games.');
-  } catch (error) {
-    console.error('Error initializing database:', error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
 
 export async function startServer() {
   await initializeDatabase();
