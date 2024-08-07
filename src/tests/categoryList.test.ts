@@ -17,9 +17,6 @@ describe('Category API', () => {
     await new Promise<void>((resolve) => server.close(() => resolve()));
   });
 
-	beforeEach(async () => {
-		await clearDatabase();
-	});
 
 	it('should get all categories', async () => {
 		const res = await request(server).get('/categories');
@@ -37,6 +34,7 @@ describe('Category API', () => {
 		const res = await request(server).get(`/categories/${categoryId}`);
 		expect(res.status).toBe(200);
 		expect(res.body.category).toHaveProperty('id', categoryId);
+		await request(server).delete(`/categories/${categoryId}`);
 	});
 
 	it('should create a new category', async () => {
@@ -44,6 +42,7 @@ describe('Category API', () => {
 		const res = await request(server).post('/categories').send(newCategory);
 		expect(res.status).toBe(201);
 		expect(res.body.category.name).toBe(newCategory.name);
+		await request(server).delete(`/categories/${res.body.category.id}`);
 	});
 
 	it('should update an existing category', async () => {
@@ -59,6 +58,7 @@ describe('Category API', () => {
 			.send(updatedCategory);
 		expect(res.status).toBe(200);
 		expect(res.body.category.name).toBe(updatedCategory.name);
+		await request(server).delete(`/categories/${categoryId}`);
 	});
 
 	it('should delete a category by ID', async () => {
