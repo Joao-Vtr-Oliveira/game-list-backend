@@ -35,6 +35,7 @@ describe('Game List API', () => {
 
 		// And then, compare the id of the first item of the all games list and compare with the res game id.
 		expect(res.body.game).toHaveProperty('id', gameId);
+		await request(server).delete(`/games/${gameId}`);
 	});
 
 	it('should create a new game', async () => {
@@ -45,6 +46,7 @@ describe('Game List API', () => {
 		// Compare the original object to the game in DB.
 		expect(res.body.game.name).toBe(newGame.name);
 		expect(res.body.game.rate).toBe(newGame.rate);
+		await request(server).delete(`/games/${res.body.game.id}`);
 	});
 
 	it('should update an existing game', async () => {
@@ -63,6 +65,7 @@ describe('Game List API', () => {
 		expect(res.status).toBe(200);
 		expect(res.body.game.name).toBe(updatedGame.name);
 		expect(res.body.game.rate).toBe(updatedGame.rate);
+		await request(server).delete(`/games/${gameId}`);
 	});
 
 	it('should delete a game by ID', async () => {
@@ -73,5 +76,6 @@ describe('Game List API', () => {
 
 		const res = await request(server).delete(`/games/${gameId}`);
 		expect(res.status).toBe(204);
+		await request(server).delete(`/games/${gameId}`);
 	});
 });
