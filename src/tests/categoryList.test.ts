@@ -1,6 +1,6 @@
-import { startServer } from '../server'; // Ajuste o caminho conforme necessário
+import { startServer } from '../server';
 import request from 'supertest';
-import { clearDatabase } from '../utils/dbUtils';
+
 
 type Category = {
 	name: string;
