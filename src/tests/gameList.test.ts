@@ -1,7 +1,6 @@
-import { startServer } from '../server'; // Ajuste o caminho conforme necessário
+import { startServer } from '../server';
 import request from 'supertest';
 import { Game } from '../utils/games';
-import { clearDatabase } from '../utils/dbUtils';
 
 describe('Game List API', () => {
 	let server: any;
