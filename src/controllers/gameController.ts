@@ -9,25 +9,25 @@ export const ping = (req: Request, res: Response) => {
 	res.send({ pong: true });
 };
 
-// Obtém todos os jogos
+// Get all games
 export const getAllGames = async (req: Request, res: Response) => {
 	try {
 		const games = await prisma.game.findMany({
 			include: {
 				categories: {
 					include: {
-						category: true, // Inclui as categorias associadas
+						category: true, // It returns with the game's categories
 					},
 				},
 			},
 		});
 
-		// Formatar a resposta para incluir categorias em cada jogo
+		// Format the response to include the categories.
 		const formattedGames = games.map((game) => ({
 			id: game.id,
 			name: game.name,
 			rate: game.rate,
-			categories: game.categories.map((gc) => gc.category), // Extrair categorias
+			categories: game.categories.map((gc) => gc.category),
 		}));
 
 		res.status(200).json({ games: formattedGames });
@@ -38,7 +38,7 @@ export const getAllGames = async (req: Request, res: Response) => {
 	}
 };
 
-// Obtém um jogo pelo ID
+// Get a game by ID
 export const getGameById = async (req: Request, res: Response) => {
 	const gameId = parseInt(req.params.id);
 	try {
@@ -47,7 +47,7 @@ export const getGameById = async (req: Request, res: Response) => {
 			include: {
 				categories: {
 					include: {
-						category: true, // Inclui as categorias associadas
+						category: true, // It returns with the game's categories
 					},
 				},
 			},
@@ -62,7 +62,7 @@ export const getGameById = async (req: Request, res: Response) => {
 			id: game.id,
 			name: game.name,
 			rate: game.rate,
-			categories: game.categories.map((gc) => gc.category), // Extrair categorias
+			categories: game.categories.map((gc) => gc.category),
 		};
 
 		res.status(200).json({ game: formattedGame });
@@ -73,7 +73,7 @@ export const getGameById = async (req: Request, res: Response) => {
 	}
 };
 
-// Cria um novo jogo
+// Create a new game
 export const createGame = async (req: Request, res: Response) => {
 	const { name, rate, categoryIds } = req.body as {
 		name: string;
@@ -110,7 +110,7 @@ export const createGame = async (req: Request, res: Response) => {
 	}
 };
 
-// Atualiza um jogo existente pelo ID
+// Update a game by ID
 export const updateGame = async (req: Request, res: Response) => {
 	const gameId = parseInt(req.params.id);
 	const { name, rate, categoryIds } = req.body;
@@ -145,7 +145,7 @@ export const updateGame = async (req: Request, res: Response) => {
 	}
 };
 
-// Deleta um jogo pelo ID
+// Delete a game by ID
 export const deleteGame = async (req: Request, res: Response) => {
 	const gameId = parseInt(req.params.id);
 	if (isNaN(gameId)) return res.status(400).json({ error: 'Invalid game ID' });
@@ -153,12 +153,12 @@ export const deleteGame = async (req: Request, res: Response) => {
 		const game = await prisma.game.findUnique({ where: { id: gameId } });
 		if (!game) return res.status(404).json({ error: 'Game not found' });
 
-		// Delete os registros na tabela de relacionamento
+		// Delete in the categories table as well.
 		await prisma.gameCategory.deleteMany({
 			where: { gameId: gameId },
 		});
 
-		// Agora, delete o jogo
+		// And then, delete the game.
 		await prisma.game.delete({
 			where: { id: gameId },
 		});

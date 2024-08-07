@@ -43,6 +43,7 @@ export async function startServer() {
 }
 
 // Just start the server if it's not setted to test mode.
+// Just put 'test' in env variables if you want to use the tests.
 if(process.env.NODE_ENV !== 'test') {
   startServer();
 }

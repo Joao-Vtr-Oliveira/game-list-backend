@@ -13,7 +13,7 @@ export const cleanCategories = async () => {
   }
 }
 
-// Obtém todas as categorias
+// Get all categories in the DB
 export const getAllCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.category.findMany({
@@ -24,7 +24,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
   }
 };
 
-// Obtém uma categoria pelo ID
+// Get a category by ID
 export const getCategoryById = async (req: Request, res: Response) => {
   const categoryId = parseInt(req.params.id);
   try {
@@ -41,7 +41,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
   }
 };
 
-// Cria uma nova categoria
+// Create a new category
 export const createCategory = async (req: Request, res: Response) => {
   const { name } = req.body;
   try {
@@ -57,7 +57,7 @@ export const createCategory = async (req: Request, res: Response) => {
   }
 };
 
-// Atualiza uma categoria existente pelo ID
+// Update a category by ID
 export const updateCategory = async (req: Request, res: Response) => {
   const categoryId = parseInt(req.params.id);
   const { name } = req.body;
@@ -74,7 +74,7 @@ export const updateCategory = async (req: Request, res: Response) => {
   }
 };
 
-// Deleta uma categoria pelo ID
+// Delete a category by ID
 export const deleteCategory = async (req: Request, res: Response) => {
   const categoryId = parseInt(req.params.id);
   try {
