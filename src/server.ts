@@ -3,7 +3,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mainRoutes from './routes/games';
+import gamesRoutes from './routes/games';
 import categoryRoutes from './routes/categories';
 import { initializeDatabase } from './utils/dbUtils';
 
@@ -15,19 +15,16 @@ server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
-// Serve arquivos estáticos da pasta 'public'
 server.use(express.static(path.join(__dirname, '../public')));
 
-// Rotas principais para jogos e categorias
-server.use(mainRoutes);
+// Routes for categories and games.
+server.use(gamesRoutes);
 server.use(categoryRoutes);
 
-// Middleware para lidar com rotas não encontradas
 server.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).send('Page not found');
 });
 
-// Middleware para tratamento global de erros
 server.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
@@ -45,6 +42,7 @@ export async function startServer() {
   });
 }
 
+// Just start the server if it's not setted to test mode.
 if(process.env.NODE_ENV !== 'test') {
   startServer();
 }
