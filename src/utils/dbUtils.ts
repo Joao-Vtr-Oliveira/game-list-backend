@@ -6,12 +6,12 @@ import { games } from './games';
 
 const prisma = new PrismaClient();
 
+// Function that cleans the DB
 export async function clearDatabase() {
 	try {
 		await prisma.gameCategory.deleteMany();
 		await prisma.game.deleteMany({});
 		await prisma.category.deleteMany({});
-		// Adicione outras tabelas que deseja limpar aqui
 		console.log('Banco de dados limpo com sucesso.');
 	} catch (error) {
 		console.error('Erro ao limpar o banco de dados:', error);
@@ -20,7 +20,7 @@ export async function clearDatabase() {
 	}
 }
 
-// Função para inicializar o banco de dados com categorias e jogos
+// Function that checks the DB and initialize it if it's empty with the base games and categories.
 export async function initializeDatabase() {
 	try {
         if((await prisma.category.findMany()).length > 0) return console.log('DB already has games and categories.');
